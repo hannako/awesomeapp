@@ -1,0 +1,10 @@
+applications:
+- name: awesomeapp-spider
+  memory: 256M
+  buildpack: https://github.com/cloudfoundry/ruby-buildpack.git#v1.6.47
+  env:
+    RAILS_ENV: production
+    RACK_ENV: production
+  services:
+  - awesome-spider-pg
+  - awesome-spider-secrets

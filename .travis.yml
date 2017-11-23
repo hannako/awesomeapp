@@ -1,0 +1,31 @@
+sudo: false
+language: ruby
+cache: bundler
+rvm:
+- 2.4
+services:
+- postgresql
+before_script:
+- sleep 10
+script:
+- bundle exec rails db:create
+- bundle exec rails db:schema:load
+- bundle exec rails test
+env:
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  - RAILS_ENV=test
+after_success:
+  - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+  - echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+  - sudo apt-get update
+  - sudo apt-get install cf-cli
+deploy:
+  - provider: script
+    script: scripts/deploy.sh awesomeapp-spider spider
+    on:
+      branch: master
+  - provider: script
+    script: scripts/deploy.sh awesomeapp-cat cat
+    on:
+      branch: master

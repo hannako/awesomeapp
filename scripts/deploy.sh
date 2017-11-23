@@ -55,6 +55,7 @@ fi
 
 rm manifest.yml || true
 
+
 cf login -a $CF_API -u $CF_USER -p $CF_PASS -s $CF_SPACE
 cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
 cf install-plugin autopilot -r CF-Community -f
